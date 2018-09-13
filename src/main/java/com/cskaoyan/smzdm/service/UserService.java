@@ -17,4 +17,6 @@ public interface UserService {
     HashMap login(User user);
 
     HashMap findById(String id);
+
+    User checkUsernameAndPassword(String username,String password);
 }

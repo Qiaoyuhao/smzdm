@@ -1,6 +1,7 @@
 package com.cskaoyan.smzdm.service;
 
 import com.cskaoyan.smzdm.domain.News;
+import com.cskaoyan.smzdm.domain.VO.NewsVO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,4 +17,5 @@ public interface NewsService {
 
     List<News> findAllNews();
 
+    NewsVO findNewsById(String id);
 }

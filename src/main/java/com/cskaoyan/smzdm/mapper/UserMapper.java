@@ -1,6 +1,7 @@
 package com.cskaoyan.smzdm.mapper;
 
 import com.cskaoyan.smzdm.domain.User;
+import com.cskaoyan.smzdm.domain.VO.Owner;
 
 public interface UserMapper {
     /**
@@ -54,4 +55,6 @@ public interface UserMapper {
     User selectByUsername(String username);
 
     User selectByUsernameAndPassword(User user);
+
+    Owner selectOwnerById(String id);
 }

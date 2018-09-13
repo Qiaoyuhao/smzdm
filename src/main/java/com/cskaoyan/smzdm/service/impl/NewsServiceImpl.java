@@ -1,6 +1,7 @@
 package com.cskaoyan.smzdm.service.impl;
 
 import com.cskaoyan.smzdm.domain.News;
+import com.cskaoyan.smzdm.domain.VO.NewsVO;
 import com.cskaoyan.smzdm.mapper.NewsMapper;
 import com.cskaoyan.smzdm.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,11 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public List<News> findAllNews() {
-        return null;
+        return newsMapper.selectAll();
+    }
+
+    @Override
+    public NewsVO findNewsById(String id) {
+        return newsMapper.selectByPrimaryKey(Integer.valueOf(id));
     }
 }

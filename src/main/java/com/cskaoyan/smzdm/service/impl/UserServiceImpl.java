@@ -78,4 +78,11 @@ public class UserServiceImpl implements UserService {
         map.put("user",user);
         return map;
     }
+
+    @Override
+    public User checkUsernameAndPassword(String username, String password) {
+        User user = new User(username,password);
+        User userByFind = userMapper.selectByUsernameAndPassword(user);
+        return userByFind;
+    }
 }

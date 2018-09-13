@@ -3,9 +3,14 @@ package com.cskaoyan.smzdm.controller;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.cskaoyan.smzdm.domain.News;
 import com.cskaoyan.smzdm.domain.User;
+import com.cskaoyan.smzdm.domain.VO.NewsVO;
+import com.cskaoyan.smzdm.domain.VO.Owner;
 import com.cskaoyan.smzdm.service.NewsService;
+import com.cskaoyan.smzdm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,7 +30,16 @@ public class NewsController {
 
     @Autowired
     NewsService newsService;
+    @Autowired
+    UserService userService;
 
+    /**
+     * @Author: QiaoYuhao
+     * @Description: 添加新的news条目
+     * @param:  news新的news对象
+     * @param:  session获取当前登录对象user的信息，因为当前添加news的用户必然是已登录用户
+     * @return: 返回添加结果
+     */
     @RequestMapping("/user/addNews")
     @ResponseBody
     public String addNews(News news, HttpSession session){
@@ -35,6 +49,23 @@ public class NewsController {
         HashMap map = newsService.addNews(news);
         String toJSONString = JSONUtils.toJSONString(map);
         return toJSONString;
+    }
+
+    /**
+     * @Author: QiaoYuhao
+     * @Description: 根据news的id获取当前news条目的详情,owner是为了和session里的user对象相区分
+     * @param:  id
+     * @param:  model
+     * @return: 返回到detail页面
+     */
+    @RequestMapping("/news/{id}")
+    public String findNewsById(@PathVariable String id, Model model){
+        NewsVO news = newsService.findNewsById(id);
+        HashMap byId = userService.findById(String.valueOf(news.getUid()));
+        User owner = (User) byId.get("user");
+        model.addAttribute("news",news);
+        model.addAttribute("owner",owner);
+        return "detail";
     }
 
 }

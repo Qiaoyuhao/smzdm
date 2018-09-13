@@ -10,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -34,10 +37,36 @@ public class InitController {
     @Autowired
     VOService voService;
 
+    @Autowired
+    UserService userService;
+
     @RequestMapping("/")
-    public String Init(Model model){
+    public String Init(Model model, HttpSession session, HttpServletRequest request){
         List<VO> vos = voService.findAllVO();
         model.addAttribute("vos",vos);
+        Cookie[] cookies = request.getCookies();
+        Cookie loginInfoCookie = null;
+        if(cookies!=null){
+            for (Cookie cookie :cookies) {
+                if(cookie.getName().equals("loginInfo")){
+                    System.out.println("cookie name = "+cookie.getName());
+                    loginInfoCookie = cookie;
+                    break;
+                }
+            }
+        }
+
+        if(session.getAttribute("user")==null){
+            if(loginInfoCookie!=null){
+                String[] loginInfo = loginInfoCookie.getValue().split("/");
+                String username = loginInfo[0];
+                String password = loginInfo[1];
+                User user = userService.checkUsernameAndPassword(username, password);
+                if(user!=null){
+                    session.setAttribute("user",user);
+                }
+            }
+        }
         return "home";
     }
 }
