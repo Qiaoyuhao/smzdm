@@ -1,5 +1,6 @@
 package com.cskaoyan.smzdm.domain;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -17,6 +18,7 @@ public class News {
     private String likeCount;
     private Date createdDate;
     private String link;
+    private Integer uid;
 
     public News() {
     }
@@ -28,6 +30,14 @@ public class News {
         this.title = title;
         this.likeCount = likeCount;
         this.createdDate = createdDate;
+    }
+
+    public Integer getUid() {
+        return uid;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
     }
 
     public String getLink() {

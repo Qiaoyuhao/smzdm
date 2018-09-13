@@ -3,13 +3,19 @@ package com.cskaoyan.smzdm.controller;
 import com.cskaoyan.smzdm.domain.News;
 import com.cskaoyan.smzdm.domain.User;
 import com.cskaoyan.smzdm.domain.VO.VO;
+import com.cskaoyan.smzdm.service.NewsService;
+import com.cskaoyan.smzdm.service.UserService;
+import com.cskaoyan.smzdm.service.VOService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -25,13 +31,12 @@ import java.util.List;
 @Controller
 public class InitController {
 
+    @Autowired
+    VOService voService;
+
     @RequestMapping("/")
-    public String Init(Model model, HttpSession session){
-        News news = new News(1,"1","1","test","1",new Date());
-        List<VO> vos = new LinkedList<>();
-        VO vo = new VO();
-        vo.setNews(news);
-        vos.add(vo);
+    public String Init(Model model){
+        List<VO> vos = voService.findAllVO();
         model.addAttribute("vos",vos);
         return "home";
     }

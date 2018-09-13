@@ -1,5 +1,10 @@
 package com.cskaoyan.smzdm.service;
 
+import com.cskaoyan.smzdm.domain.News;
+
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * @Author: QiaoYuhao
  * @Description:
@@ -7,4 +12,8 @@ package com.cskaoyan.smzdm.service;
  * @Modified By:
  */
 public interface NewsService {
+    HashMap addNews(News news);
+
+    List<News> findAllNews();
+
 }
