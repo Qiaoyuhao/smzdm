@@ -13,9 +13,9 @@ public class News {
 
     private Integer id;
     private String image;
-    private String commentCount;
+    private Integer commentCount=0;
     private String title;
-    private String likeCount;
+    private Integer likeCount=0;
     private Date createdDate;
     private String link;
     private Integer uid;
@@ -23,7 +23,7 @@ public class News {
     public News() {
     }
 
-    public News(Integer id, String image, String commentCount, String title, String likeCount, Date createdDate) {
+    public News(Integer id, String image, Integer commentCount, String title, Integer likeCount, Date createdDate) {
         this.id = id;
         this.image = image;
         this.commentCount = commentCount;
@@ -64,11 +64,11 @@ public class News {
         this.image = image;
     }
 
-    public String getCommentCount() {
+    public Integer getCommentCount() {
         return commentCount;
     }
 
-    public void setCommentCount(String commentCount) {
+    public void setCommentCount(Integer commentCount) {
         this.commentCount = commentCount;
     }
 
@@ -80,11 +80,11 @@ public class News {
         this.title = title;
     }
 
-    public String getLikeCount() {
+    public Integer getLikeCount() {
         return likeCount;
     }
 
-    public void setLikeCount(String likeCount) {
+    public void setLikeCount(Integer likeCount) {
         this.likeCount = likeCount;
     }
 

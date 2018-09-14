@@ -18,4 +18,8 @@ public interface NewsService {
     List<News> findAllNews();
 
     NewsVO findNewsById(String id);
+
+    int addLike(Integer newsId, int uid);
+
+    int addDislike(Integer newsId, int uid);
 }

@@ -1,5 +1,7 @@
 package com.cskaoyan.smzdm.controller;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.cskaoyan.smzdm.domain.News;
 import com.cskaoyan.smzdm.domain.User;
 import com.cskaoyan.smzdm.domain.VO.VO;
@@ -49,7 +51,6 @@ public class InitController {
         if(cookies!=null){
             for (Cookie cookie :cookies) {
                 if(cookie.getName().equals("loginInfo")){
-                    System.out.println("cookie name = "+cookie.getName());
                     loginInfoCookie = cookie;
                     break;
                 }
@@ -61,7 +62,13 @@ public class InitController {
                 String[] loginInfo = loginInfoCookie.getValue().split("/");
                 String username = loginInfo[0];
                 String password = loginInfo[1];
+
+//                User jsonToUser = (User) JSONUtils.parse(loginInfoCookie.getValue());
                 User user = userService.checkUsernameAndPassword(username, password);
+
+//                User jsonToUser = JSONObject.parseObject(loginInfoCookie.getValue(), User.class);
+//
+//                User user = userService.checkUsernameAndPassword(jsonToUser.getUsername(), jsonToUser.getPassword());
                 if(user!=null){
                     session.setAttribute("user",user);
                 }

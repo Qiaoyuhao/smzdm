@@ -4,8 +4,11 @@ import com.cskaoyan.smzdm.domain.News;
 import com.cskaoyan.smzdm.domain.VO.NewsVO;
 import com.cskaoyan.smzdm.mapper.NewsMapper;
 import com.cskaoyan.smzdm.service.NewsService;
+import com.cskaoyan.smzdm.utils.JedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.Jedis;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,5 +48,31 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public NewsVO findNewsById(String id) {
         return newsMapper.selectByPrimaryKey(Integer.valueOf(id));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int addLike(Integer nid, int uid) {
+        Jedis jedis = JedisUtils.getJedis();
+        jedis.sadd(nid+"like",Integer.toString(uid));
+        jedis.srem(nid+"dislike",Integer.toString(uid));
+        News news = newsMapper.selectNewsByPrimaryKey(nid);
+        int likecount = Math.toIntExact(jedis.scard(nid + "like"));
+        news.setLikeCount(likecount);
+        newsMapper.updateByPrimaryKeySelective(news);
+        return likecount;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int addDislike(Integer nid, int uid) {
+        Jedis jedis = JedisUtils.getJedis();
+        jedis.srem(nid+"like",Integer.toString(uid));
+        jedis.sadd(nid+"dislike",Integer.toString(uid));
+        News news = newsMapper.selectNewsByPrimaryKey(nid);
+        int likecount = Math.toIntExact(jedis.scard(nid + "like"));
+        news.setLikeCount(likecount);
+        newsMapper.updateByPrimaryKeySelective(news);
+        return likecount;
     }
 }

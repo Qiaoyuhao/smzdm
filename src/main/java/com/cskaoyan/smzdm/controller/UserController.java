@@ -1,7 +1,10 @@
 package com.cskaoyan.smzdm.controller;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.cskaoyan.smzdm.domain.User;
 import com.cskaoyan.smzdm.service.UserService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,6 +56,7 @@ public class UserController {
      */
     @RequestMapping("/login")
     @ResponseBody
+    @JsonIgnore
     public HashMap login(String username, String password, HttpSession session, HttpServletRequest request,
                          HttpServletResponse response,@RequestParam("rember") int rember){
         User user = new User(username,password);
@@ -60,12 +64,21 @@ public class UserController {
         if((Integer) map.get("code") ==0){
             User userByFind = (User) map.get("user");
             session.setAttribute("user",userByFind);
+            //如果记住登录，则将用户信息存入cookie
             if(rember>0){
                 Cookie cookie = new Cookie("loginInfo",
                         userByFind.getUsername()+"/"+userByFind.getPassword());
+
+//                String userToJson = JSONUtils.toJSONString(userByFind);
+//                String userToJson = JSONObject.toJSONString(userByFind, true);
+
+//                Object toJSON = JSONObject.toJSON(userByFind);
+
+//                Cookie cookie = new Cookie("loginInfo",userToJson);
+                cookie.setMaxAge(3600*24*7);
+
                 //setPath,cookie跨路径有效
                 cookie.setPath("/");
-                cookie.setMaxAge(3600*24*7);
                 response.addCookie(cookie);
 
             }
@@ -82,6 +95,8 @@ public class UserController {
      *               于是在前端personal的页面，加了#if (${owner}),来判断是否有owner对象返回，没有的话正常显示session中的user信息
      *               如果有owner对象的话，显示news发布者owner的信息
      *               而在controller里，默认根据id查询user信息，并以“owner”为key值存放在model里
+     *
+     *               这里并不一定需要命名为owner,命名为任何除了user以外的名字均可
      * @param:  id
      * @param:  model
      * @return:  返回到personal页面
@@ -116,7 +131,7 @@ public class UserController {
 
             }
         }
-        return "home";
+        return "/";
 
     }
 }

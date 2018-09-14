@@ -1,12 +1,14 @@
 package com.cskaoyan.smzdm.domain;
 
+import java.io.Serializable;
+
 /**
  * @Author: QiaoYuhao
  * @Description:
  * @Date: Created in 9:52 2018/9/12
  * @Modified By:
  */
-public class User {
+public class User implements Serializable {
 
     private int id;
     private String username;

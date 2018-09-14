@@ -3,8 +3,10 @@ package com.cskaoyan.smzdm.controller;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.cskaoyan.smzdm.domain.News;
 import com.cskaoyan.smzdm.domain.User;
+import com.cskaoyan.smzdm.domain.VO.Commentvo;
 import com.cskaoyan.smzdm.domain.VO.NewsVO;
 import com.cskaoyan.smzdm.domain.VO.Owner;
+import com.cskaoyan.smzdm.service.CommentService;
 import com.cskaoyan.smzdm.service.NewsService;
 import com.cskaoyan.smzdm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author: QiaoYuhao
@@ -32,6 +35,8 @@ public class NewsController {
     NewsService newsService;
     @Autowired
     UserService userService;
+    @Autowired
+    CommentService commentService;
 
     /**
      * @Author: QiaoYuhao
@@ -63,9 +68,33 @@ public class NewsController {
         NewsVO news = newsService.findNewsById(id);
         HashMap byId = userService.findById(String.valueOf(news.getUid()));
         User owner = (User) byId.get("user");
+        List<Commentvo> comments = commentService.findAllCommentByNid(Integer.valueOf(id));
         model.addAttribute("news",news);
         model.addAttribute("owner",owner);
+        model.addAttribute("comments",comments);
         return "detail";
+    }
+
+    @RequestMapping("/like")
+    @ResponseBody
+    public HashMap addLike(String newsId,HttpSession session){
+       User user = (User) session.getAttribute("user");
+        int like = newsService.addLike(Integer.valueOf(newsId), user.getId());
+        HashMap map = new HashMap();
+        map.put("msg",like);
+        map.put("code",0);
+        return map;
+    }
+
+    @RequestMapping("/dislike")
+    @ResponseBody
+    public HashMap addDislike(String newsId,HttpSession session){
+        User user = (User) session.getAttribute("user");
+        int like = newsService.addDislike(Integer.valueOf(newsId), user.getId());
+        HashMap map = new HashMap();
+        map.put("msg",like);
+        map.put("code",0);
+        return map;
     }
 
 }
