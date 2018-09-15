@@ -89,7 +89,7 @@
                 oEl.parent().find('.click-dislike').removeClass('pressed');
             },
             error: function () {
-                alert('出现错误，请重试');
+                alert('未登录，请登录重试');
             },
             always: function () {
                 that.actioning = false;
@@ -115,7 +115,7 @@
                 oLikeBtn.find('span.count').html(oResult.msg);
             },
             error: function () {
-                alert('出现错误，请重试');
+                alert('未登录，请登录重试');
             },
             always: function () {
                 that.actioning = false;

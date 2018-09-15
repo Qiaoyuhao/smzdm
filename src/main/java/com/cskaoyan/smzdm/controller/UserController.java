@@ -131,7 +131,7 @@ public class UserController {
 
             }
         }
-        return "/";
+        return "redirect:/";
 
     }
 }

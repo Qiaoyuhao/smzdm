@@ -7,6 +7,7 @@ import com.cskaoyan.smzdm.domain.VO.NewsVO;
 import com.cskaoyan.smzdm.mapper.CommentMapper;
 import com.cskaoyan.smzdm.mapper.NewsMapper;
 import com.cskaoyan.smzdm.service.CommentService;
+import com.cskaoyan.smzdm.utils.ResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,16 +32,14 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public HashMap addComment(Comment comment) {
         int insert = commentMapper.insert(comment);
-        HashMap map = new HashMap();
+        HashMap map = null;
         if(insert==1){
             News news = newsMapper.selectNewsByPrimaryKey(comment.getNid());
             news.setCommentCount(news.getCommentCount()+1);
             newsMapper.updateByPrimaryKeySelective(news);
-            map.put("code",0);
-            map.put("msg","添加评论成功");
+            map = ResultUtils.resultMsg(0, "添加评论成功");
         }else {
-            map.put("code",1);
-            map.put("msg","添加评论失败");
+            map = ResultUtils.resultMsg(0, "添加评论失败");
         }
         return map;
     }

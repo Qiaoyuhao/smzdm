@@ -1,6 +1,7 @@
 package com.cskaoyan.smzdm.service.impl;
 
 import com.cskaoyan.smzdm.service.ImageService;
+import com.cskaoyan.smzdm.utils.ResultUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,17 +39,12 @@ public class ImageServiceImpl implements ImageService {
 
             //写入上传文件
             uploadFile.transferTo(newFile);
-
-            map.put("msg","http://localhost/"+newFileName);
-            map.put("code",0);
-
+            map = ResultUtils.resultMsg(0, "http://localhost/"+newFileName);
             return map;
 
         } catch (IOException e) {
             e.printStackTrace();
-            map.put("msg","文件上传出现问题");
-            map.put("code",1);
-
+            map = ResultUtils.resultMsg(1, "文件上传出现问题");
             return map;
         }
     }
