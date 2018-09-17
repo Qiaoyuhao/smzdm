@@ -75,17 +75,17 @@
         </div>
 
         <div id="comments" class="comments">
-            #foreach($commentvo in $comments)
+            #foreach($comment in $comments)
             <div class="media">
-                <a class="media-left" href="/user/$!{commentvo.user.id}">
-                    <img src="$!{commentvo.user.headUrl}">
+                <a class="media-left" href="/user/$!{comment.user.id}">
+                    <img src="$!{comment.user.headUrl}">
                 </a>
                 <div class="media-body">
                     <h4 class="media-heading">
-                        <small class="date">$date.format('yyyy-MM-dd HH:mm:ss', $!{commentvo.comment.createdDate})
+                        <small class="date">$date.format('yyyy-MM-dd HH:mm:ss', $!{comment.comment.createdDate})
                         </small>
                     </h4>
-                    <div>$!{commentvo.comment.content}</div>
+                    <div>$!{comment.comment.content}</div>
                 </div>
             </div>
             #end

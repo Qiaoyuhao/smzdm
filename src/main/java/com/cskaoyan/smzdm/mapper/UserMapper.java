@@ -57,4 +57,6 @@ public interface UserMapper {
     User selectByUsernameAndPassword(User user);
 
     Owner selectOwnerById(String id);
+
+    Integer getIdByUsername(String toName);
 }

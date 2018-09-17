@@ -87,7 +87,9 @@ public class NewsServiceImpl implements NewsService {
         }catch (Exception e){
             throw new RuntimeException("运行异常");
         }finally {
-            jedis.close();
+            if (jedis != null) {
+                jedis.close();
+            }
         }
 
         News news = newsMapper.selectNewsByPrimaryKey(nid);
@@ -122,7 +124,10 @@ public class NewsServiceImpl implements NewsService {
         }catch (Exception e){
             throw new RuntimeException("运行异常");
         }finally {
-            jedis.close();
+            //防止空指针异常
+            if (jedis != null) {
+                jedis.close();
+            }
         }
 
 

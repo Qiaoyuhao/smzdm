@@ -8,8 +8,10 @@
     velocity:
       suffix: .html
       expose-session-attributes: true
-      toolbox-config-location: toolbox.xml
+#      toolbox-config-location: toolbox.xml
       cache: false
+      allow-session-override: true
+      date-tool-attribute: date
   server:
     port: 80
   mybatis:

@@ -3,6 +3,7 @@ package com.cskaoyan.smzdm.service.impl;
 import com.cskaoyan.smzdm.domain.User;
 import com.cskaoyan.smzdm.mapper.UserMapper;
 import com.cskaoyan.smzdm.service.UserService;
+import com.cskaoyan.smzdm.utils.ResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,17 +33,14 @@ public class UserServiceImpl implements UserService {
     public HashMap addUser(User user) {
         HashMap map = new HashMap();
         if(userMapper.selectByUsername(user.getUsername())!=null){
-            map.put("code",1);
-            map.put("msg","用户名已被使用");
+            map = ResultUtils.resultMsg(1, "用户名已被使用");
         }else {
             user.setHeadUrl(String.format("http://images.nowcoder.com/head/%dt.png",new Random().nextInt(100)));
             int insert = userMapper.insert(user);
             if(insert==1){
-                map.put("code",0);
-                map.put("msg","注册成功");
+                map = ResultUtils.resultMsg(0, "注册成功");
             }else{
-                map.put("code",1);
-                map.put("msg","注册失败");
+                map = ResultUtils.resultMsg(1, "注册失败");
             }
         }
         return map;
@@ -61,12 +59,10 @@ public class UserServiceImpl implements UserService {
         HashMap map = new HashMap();
         User userByFind = userMapper.selectByUsernameAndPassword(user);
         if(userByFind!=null){
-            map.put("code",0);
-            map.put("msg","登录成功");
+            map = ResultUtils.resultMsg(0, "登录成功");
             map.put("user",userByFind);
         }else {
-            map.put("code",1);
-            map.put("msg","用户名或密码错误");
+            map = ResultUtils.resultMsg(1, "用户名或密码错误");
         }
         return map;
     }
